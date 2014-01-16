@@ -1,3 +1,6 @@
+build
+*.geany
+
 # Compiled Object files
 *.slo
 *.lo
