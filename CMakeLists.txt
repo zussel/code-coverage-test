@@ -7,8 +7,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
 include(CodeCoverage)
 
-enable_testing()
-
 set(CMAKE_CXX_FLAGS "-g -O0 -Wall -W -fprofile-arcs -ftest-coverage")
  
 set(CMAKE_C_FLAGS "-g -O0 -Wall -W -fprofile-arcs -ftest-coverage")
@@ -16,6 +14,12 @@ set(CMAKE_C_FLAGS "-g -O0 -Wall -W -fprofile-arcs -ftest-coverage")
 #SET(CMAKE_SHARED_LINKER_FLAGS="-fprofile-arcs -ftest-coverage")
 set(CMAKE_EXE_LINKER_FLAGS "-fprofile-arcs -ftest-coverage")
 
-add_executable(covtest coverage.cpp)
+include_directories(${PROJECT_SOURCE_DIR}/include)
 
-setup_target_for_coverage(mycov covtest coverage)
+add_subdirectory(src)
+
+add_executable(test_calc test_calc.cpp)
+
+target_link_libraries(test_calc calc)
+
+setup_target_for_coverage(coverage test_calc coverage)
