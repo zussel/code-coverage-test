@@ -3,7 +3,7 @@ language: cpp
 script:
   - cmake -DCMAKE_BUILD_TYPE=Debug .
   - make
-  - test_calc
+  - ./test_calc
 
 branches:
   only:
