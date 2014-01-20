@@ -1,4 +1,12 @@
 build
+CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
+test_calc
+libcalc*
+coverage
+
 *.geany
 
 # Compiled Object files
