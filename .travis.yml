@@ -1,0 +1,19 @@
+language: cpp
+
+script:
+  - mkdir build
+  - cd build
+  - cmake -DCMAKE_BUILD_TYPE=Debug ..
+  - make
+  - make coverage
+
+branches:
+  only:
+    - master
+
+notifications:
+  email:
+    recipients:
+      - sascha.kuehl@gmx.net
+  on_success: change # [always|never|change] # default: change
+  on_failure: always # [always|never|change] # default: always
