@@ -1,15 +1,19 @@
 language: cpp
 
 script:
-  - mkdir build
-  - cd build
-  - cmake -DCMAKE_BUILD_TYPE=Debug ..
+  - cmake -DCMAKE_BUILD_TYPE=Debug .
   - make
-  - make coverage
+  - test_calc
 
 branches:
   only:
     - master
+
+before_install:
+  - sudo pip install cpp-coveralls --use-mirrors
+
+after_success:
+  - coveralls --verbose --exclude-pattern 'CMake[^\.]*\.c(?:pp)?' --exclude-pattern '[^\.]*\.h'
 
 notifications:
   email:
