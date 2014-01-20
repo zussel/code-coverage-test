@@ -13,7 +13,7 @@ before_install:
   - sudo pip install cpp-coveralls --use-mirrors
 
 after_success:
-  - coveralls --verbose --exclude-pattern 'CMake[^\.]*\.c(?:pp)?' --exclude-pattern '[^\.]*\.h'
+  - coveralls --verbose --exclude-pattern 'CMake[^\.]*\.c' --exclude-pattern 'CMake[^\.]*\.cpp' --exclude-pattern '[^\.]*\.h'
 
 notifications:
   email:
