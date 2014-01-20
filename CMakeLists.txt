@@ -5,7 +5,7 @@ project(code-coverage-test)
 # add module path
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
-include(CodeCoverage)
+#include(CodeCoverage)
 
 set(CMAKE_CXX_FLAGS "-g -O0 -Wall -W -fprofile-arcs -ftest-coverage")
  
@@ -22,4 +22,4 @@ add_executable(test_calc test_calc.cpp)
 
 target_link_libraries(test_calc calc)
 
-setup_target_for_coverage(coverage test_calc coverage)
+#setup_target_for_coverage(coverage test_calc coverage)
