@@ -25,9 +25,11 @@ if (COVERALLS AND CMAKE_BUILD_TYPE STREQUAL "Debug")
   #SET(CMAKE_SHARED_LINKER_FLAGS="-fprofile-arcs -ftest-coverage")
   set(CMAKE_EXE_LINKER_FLAGS "-fprofile-arcs -ftest-coverage")
   
-  include(Coveralls)
+#  include(Coveralls)
   
-  setup_target_for_coveralls(coveralls test coveralls)
+#  setup_target_for_coveralls(coveralls test coveralls)
+
+  configure_file(${CMAKE_SOURCE_DIR}/scripts/coveralls.sh.in ${CMAKE_BINARY_DIR}/coveralls-upload @ONLY)
 
 endif()
 
