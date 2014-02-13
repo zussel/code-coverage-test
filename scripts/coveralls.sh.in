@@ -9,23 +9,15 @@ GCOV_VERSION=$(gcov -v | head -n 1 | sed 's/^.*[^0-9]\([0-9]*\)\.\([0-9]*\)\.\([
 
 #gcov --source-prefix @CMAKE_SOURCE_DIR@ --preserve-paths --relative-only $(find -iname *.gcda) 1>/dev/null || exit 0
 
-FILES=$(find ${LIB_DIR} -iname *.gcda)
-
-echo $FILES
-
-FILES=$(find ${LIB_DIR} -iname *.gcno)
-
-echo $FILES
-
 echo "generating gcov files"
 
-gcov --preserve-paths $(find ${LIB_DIR} -iname *.gcda) 1>/dev/null || exit 0
+for file in $(find ${LIB_DIR} -iname *.gcda -print)
+do
+	echo generating file $(basename $file)
+	gcov --preserve-paths -o $(dirname $file) $file 1>/dev/null || exit 0
+done
 
 echo "done!"
-
-FILES=*.gcov
-
-echo $FILES
 
 if [ ! -z "${TRAVIS_JOB_ID}" ]
 then
@@ -63,6 +55,7 @@ EOF
 
 fi
 
+echo "processing source files"
 
 for file in $(find * -iname '*.gcov' -print)
 do
@@ -70,6 +63,7 @@ do
   then
     continue;
   fi
+  echo processing file $file
   srcname=$(echo ${file} | sed -re 's%#%\/%g; s%.gcov$%%')
   cat >>coverage.json <<EOF
     {
@@ -80,11 +74,12 @@ do
 EOF
 done
 
+echo "done!"
+
 mv coverage.json coverage.json.tmp
 cat >coverage.json <(head -n -1 coverage.json.tmp) <(echo -e "    }\n  ]\n}")
 rm coverage.json.tmp
 
-#curl -F json_file=@coverage.json https://coveralls.io/api/v1/jobs
+curl -F json_file=@coverage.json https://coveralls.io/api/v1/jobs
 
-rm *.gcov
-#$(find $LIB_DIR -name '*.gcda' -o -name '*.gcno' -type f -exec rm {} \;)
+$(find * -name '*.gcda' -o -name '*.gcno' -o -name '*.gcov' -type f -exec rm {} \;)
