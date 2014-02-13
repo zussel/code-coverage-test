@@ -1,19 +1,18 @@
 language: cpp
 
 script:
-  - cmake -DCMAKE_BUILD_TYPE=Debug .
+  - mkdir build
+  - cd build
+  - cmake -DCMAKE_BUILD_TYPE=Debug -DCOVERALLS=true ..
   - make
-  - ./test_calc
+  - make coveralls
+
+after_success:
+  - ./coveralls-upload
 
 branches:
   only:
     - master
-
-before_install:
-  - sudo pip install cpp-coveralls --use-mirrors
-
-after_success:
-  - coveralls --verbose --exclude-pattern 'CMake[^\.]*\.c' --exclude-pattern 'CMake[^\.]*\.cpp' --exclude-pattern '[^\.]*\.h'
 
 notifications:
   email:

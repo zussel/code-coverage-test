@@ -1,5 +1,7 @@
 #include "calculator.hpp"
 
+#include <stdexcept>
+
 calculator::calculator()
   : store_(0)
 {}
@@ -18,6 +20,9 @@ int calculator::minus(int a, int b)
 
 int calculator::divide(int a, int divisor)
 {
+  if (divisor == 0) {
+    throw new std::logic_error("divisor must not be zero");
+  }
   return a / divisor;
 }
 

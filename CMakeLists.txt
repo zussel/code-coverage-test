@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 2.8)
 
 project(code-coverage-test)
 
@@ -14,22 +14,26 @@ MESSAGE( STATUS "PROJECT_SOURCE_DIR: " ${PROJECT_SOURCE_DIR} )
 
 MESSAGE( STATUS "CMAKE_BINARY_DIR: " ${CMAKE_BINARY_DIR} )
 
-#include(CodeCoverage)
+option(COVERALLS "Enable generation and sending of coveralls data" false)
+option(COVERAGE "Enable generation of code coverage" false)
 
-option(COVERALLS "Enable generation sending of coveralls data" true)
+include(CodeCoverage)
+include(Coveralls)
 
-if (COVERALLS AND CMAKE_BUILD_TYPE STREQUAL "Debug")
-  message(STATUS "will generate coveralls data")
+if ((COVERALLS OR COVERAGE) AND CMAKE_BUILD_TYPE STREQUAL "Debug")
+  message(STATUS "will generate coverage data")
   set(CMAKE_CXX_FLAGS "-g -O0 -Wall -W -fprofile-arcs -ftest-coverage")
   set(CMAKE_C_FLAGS "-g -O0 -Wall -W -fprofile-arcs -ftest-coverage")
   #SET(CMAKE_SHARED_LINKER_FLAGS="-fprofile-arcs -ftest-coverage")
   set(CMAKE_EXE_LINKER_FLAGS "-fprofile-arcs -ftest-coverage")
   
-#  include(Coveralls)
+  if (COVERAGE)
+    setup_target_for_coverage(coverage test_calc lib coverage)
+  endif()
   
-#  setup_target_for_coveralls(coveralls test coveralls)
-
-  configure_file(${CMAKE_SOURCE_DIR}/scripts/coveralls.sh.in ${CMAKE_BINARY_DIR}/coveralls-upload @ONLY)
+  if (COVERALLS)
+    setup_target_for_coveralls(coveralls test_calc lib)
+  endif()
 
 endif()
 
@@ -45,12 +49,9 @@ ADD_CUSTOM_TARGET(release
   COMMENT "Switch CMAKE_BUILD_TYPE to Release"
 )
 
-include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(${PROJECT_SOURCE_DIR}/lib/include)
 
-add_subdirectory(src)
-
-add_executable(test_calc test_calc.cpp)
-
-target_link_libraries(test_calc calc)
+add_subdirectory(lib)
+add_subdirectory(test)
 
 #setup_target_for_coverage(coverage test_calc coverage)
