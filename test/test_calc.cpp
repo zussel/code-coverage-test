@@ -3,6 +3,8 @@
 #include <iostream>
 #include <stdexcept>
 
+using namespace std;
+
 int main (int, char *[])
 {
 
@@ -16,9 +18,9 @@ int main (int, char *[])
   
   try {
     res = calc.divide(20, 0);
-  } catch(std::logic_error &) {
+  } catch(logic_error &) {
     // correct exception was caught
-  } catch(std::exception) {
+  } catch(exception &) {
     // unexpected exception was caught
     return 1;
   }

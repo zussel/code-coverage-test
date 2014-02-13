@@ -21,7 +21,7 @@ int calculator::minus(int a, int b)
 int calculator::divide(int a, int divisor)
 {
   if (divisor == 0) {
-    throw new std::logic_error("divisor must not be zero");
+    throw std::logic_error("divisor must not be zero");
   }
   return a / divisor;
 }
