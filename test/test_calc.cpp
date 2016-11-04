@@ -12,7 +12,7 @@ int main (int, char *[])
 
   int res = calc.add(1, 5);
   
-  res = calc.minus(7, res);
+//  res = calc.minus(7, res);
   
   res = calc.divide(20, res);
   
