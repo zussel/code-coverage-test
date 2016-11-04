@@ -6,6 +6,8 @@ cmake_install.cmake
 test_calc
 libcalc*
 coverage
+.idea
+*.user
 
 *.geany
 
