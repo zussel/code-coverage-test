@@ -29,7 +29,7 @@ script:
 after_success:
   #- ./coveralls-upload
   - cd ${TRAVIS_BUILD_DIR}
-  - lcov --directory lib --capture --output-file coverage.info
+  - lcov --directory build --capture --output-file coverage.info
   - lcov --remove coverage.info 'tests/*' '/usr/*' --output-file coverage.info
   - lcov --list coverage.info
   - coveralls-lcov --repo-token=${COVERALLS_TOKEN} coverage.info
