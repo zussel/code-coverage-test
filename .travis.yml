@@ -18,16 +18,21 @@ install:
   - lcov --version
   - g++ --version
 
+before_script:
+  - cd ${TRAVIS_BUILD_DIR}
+  # init coverage to 0 (optional)
+  - lcov --directory build/lib --zerocounters
+
 script:
   - cd ${TRAVIS_BUILD_DIR}
   - mkdir build
   - cd build
   - cmake -DCMAKE_BUILD_TYPE=Debug -DCOVERALLS=true ..
   - make
+  - ctest --verbose
   - make coveralls
 
 after_success:
-  #- ./coveralls-upload
   - cd ${TRAVIS_BUILD_DIR}
   - lcov --directory build/lib --capture --output-file coverage.info
   - lcov --remove coverage.info 'tests/*' '/usr/*' --output-file coverage.info
